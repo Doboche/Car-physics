@@ -6,6 +6,7 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     Vector3 crtRotation;
+    Vector3 crtTranslation;
     public Vector3 rotation;
     public Vector3 translation;
     // Use this for initialization
@@ -28,10 +29,14 @@ public class Test : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {   
+    {
+        Translation.translateX(gameObject, translation.x - crtTranslation.x);
+        Translation.translateY(gameObject, translation.y - crtTranslation.y);
+        Translation.translateZ(gameObject, translation.z - crtTranslation.z);
         Rotation.rotateX(gameObject, rotation.x - crtRotation.x);
-        //Rotation.rotateY(gameObject, rotation.y - crtRotation.y);
-        //Rotation.rotateZ(gameObject, rotation.z - crtRotation.z);
+        Rotation.rotateY(gameObject, rotation.y - crtRotation.y);
+        Rotation.rotateZ(gameObject, rotation.z - crtRotation.z);
         crtRotation = rotation;
+        crtTranslation = translation;
     }
 }

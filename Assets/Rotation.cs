@@ -6,7 +6,7 @@ using System;
 public static class Rotation {
     public static void rotateX(GameObject go, double theta)
     {
-        Vector3 centerOfMass = CenterOfMass.getCenterOfMass(go.GetComponentsInChildren<Mass>());
+        //Vector3 centerOfMass = CenterOfMass.getCenterOfMass(go.GetComponentsInChildren<Mass>());
         double sin_t = Math.Sin(theta);
         double cos_t = Math.Cos(theta);
 
@@ -17,15 +17,15 @@ public static class Rotation {
             Vector3[] newVal = new Vector3[m.vertexCount];
             for (int i = 0; i < m.vertexCount; i++)
             {
-                Vector3 node = centerOfMass;
-                newVal[i] = new Vector3(node.x, (float)(node.y * cos_t - node.z * sin_t), (float)(node.z * cos_t + node.y * sin_t));
+                Vector3 node = m.vertices[i] + mf.transform.position - go.transform.position;
+                newVal[i] = new Vector3(node.x, (float)(node.y * cos_t - node.z * sin_t), (float)(node.z * cos_t + node.y * sin_t)) - mf.transform.position + go.transform.position;
             }
             m.vertices = newVal;
         }
     }
     public static void rotateY(GameObject go, double theta)
     {
-        Vector3 centerOfMass = CenterOfMass.getCenterOfMass(go.GetComponentsInChildren<Mass>());
+        //Vector3 centerOfMass = CenterOfMass.getCenterOfMass(go.GetComponentsInChildren<Mass>());
         double sin_t = Math.Sin(theta);
         double cos_t = Math.Cos(theta);
 
@@ -36,15 +36,15 @@ public static class Rotation {
             Vector3[] newVal = new Vector3[m.vertexCount];
             for (int i = 0; i < m.vertexCount; i++)
             {
-                Vector3 node = centerOfMass;
-                newVal[i] = new Vector3((float)(node.x * cos_t - node.z * sin_t), node.y, (float)(node.z * cos_t + node.x * sin_t));
+                Vector3 node = m.vertices[i] + mf.transform.position - go.transform.position;
+                newVal[i] = new Vector3((float)(node.x * cos_t - node.z * sin_t), node.y, (float)(node.z * cos_t + node.x * sin_t)) - mf.transform.position + go.transform.position;
             }
             m.vertices = newVal;
         }
     }
     public static void rotateZ(GameObject go, double theta)
     {
-        Vector3 centerOfMass = CenterOfMass.getCenterOfMass(go.GetComponentsInChildren<Mass>());
+        //Vector3 centerOfMass = CenterOfMass.getCenterOfMass(go.GetComponentsInChildren<Mass>());
         double sin_t = Math.Sin(theta);
         double cos_t = Math.Cos(theta);
 
@@ -55,8 +55,8 @@ public static class Rotation {
             Vector3[] newVal = new Vector3[m.vertexCount];
             for (int i = 0; i < m.vertexCount; i++)
             {
-                Vector3 node = centerOfMass;
-                newVal[i] = new Vector3((float)(node.x * cos_t - node.y * sin_t), (float)(node.y * cos_t + node.x * sin_t), node.z);
+                Vector3 node = m.vertices[i] + mf.transform.position - go.transform.position;
+                newVal[i] = new Vector3((float)(node.x * cos_t - node.y * sin_t), (float)(node.y * cos_t + node.x * sin_t), node.z) - mf.transform.position + go.transform.position;
             }
             m.vertices = newVal;
         }
