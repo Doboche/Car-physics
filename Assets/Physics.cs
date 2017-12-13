@@ -49,7 +49,6 @@ public class Physics : MonoBehaviour
             force = AddForce(force, normal);
         }
         antposition = position;
-<<<<<<< HEAD
         if (i > 500)
         {
             if (velocity.x == 0 && velocity.y ==0 && velocity.z == 0)
@@ -66,15 +65,6 @@ public class Physics : MonoBehaviour
         Debug.Log("AirForce" + force);
         force = AddForce(force, Forces.RollingResistanceForce(cr, velocity));
         Debug.Log("RollingForce" + force);
-=======
-        acceleration = force / masse;
-        //Debug.Log("acceleration" + acceleration);
-        Debug.Log("force" + force);
-        velocity = velocity + acceleration * Time.deltaTime;
-        position = position + velocity * Time.deltaTime;
-        float step = speedmax * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(antposition, position, step);
->>>>>>> e9da15b145102d4f9dcd40dcf0a670af03979848
         if (Collision(obj) == true)
         {
             //transform.Translate(-force * Time.deltaTime);
@@ -96,14 +86,10 @@ public class Physics : MonoBehaviour
         transform.position = Vector3.MoveTowards(antposition, position, step);
         
         antvelocity = velocity;
-<<<<<<< HEAD
         //Debug.Log("position" + position);
         Debug.Log("velocity" + velocity);
         i++;
         Debug.Log("i" + i);
-=======
-       // Debug.Log("position" + position);
->>>>>>> e9da15b145102d4f9dcd40dcf0a670af03979848
     }
 
     bool Collision(GameObject obj)
