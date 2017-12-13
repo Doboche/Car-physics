@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Collision : MonoBehaviour {
-
-    public GameObject ground;
+    public GameObject obj;
     public double radius;
-    private Collision[] objCollision;
-	// Use this for initialization
-	void Start () {
-        objCollision = GetComponents<Collision>();
+    public bool activate;
+
+    void Start()
+    {
     }
-	
-	// Update is called once per frame
-	void Update () {
-        foreach (Collision c in objCollision)
+
+    // Update is called once per frame
+    void Update()
+    {
+        double distance = Vector3.Distance(transform.position, obj.transform.position);
+        Debug.Log(" " + distance);
+        if (distance != 0 && distance < radius + 1)
         {
-            if(this != c && Vector3.Distance(c.transform.position, transform.position)  < c.radius + radius)
-            {
-                Debug.Log(" " + c);
-                Debug.Log("COLLISIONNN !!!!!");
-            }
+            
         }
-	}
+    }
 }

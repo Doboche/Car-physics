@@ -60,11 +60,11 @@ public class Physics : MonoBehaviour
         {
             force = AddForce(force, Forces.TractionForce(maxTorque,wheelRadius));
         }
-        Debug.Log("TractionForce" + force);
+        //Debug.Log("TractionForce" + force);
         force = AddForce(force, Forces.AirResistanceForce(cair, velocity));
-        Debug.Log("AirForce" + force);
+        //Debug.Log("AirForce" + force);
         force = AddForce(force, Forces.RollingResistanceForce(cr, velocity));
-        Debug.Log("RollingForce" + force);
+        //Debug.Log("RollingForce" + force);
         if (Collision(obj) == true)
         {
             //transform.Translate(-force * Time.deltaTime);
@@ -87,9 +87,7 @@ public class Physics : MonoBehaviour
         
         antvelocity = velocity;
         //Debug.Log("position" + position);
-        Debug.Log("velocity" + velocity);
         i++;
-        Debug.Log("i" + i);
     }
 
     bool Collision(GameObject obj)
