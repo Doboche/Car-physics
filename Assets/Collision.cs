@@ -18,8 +18,8 @@ public class Collision : MonoBehaviour {
         {
             if(this != c && Vector3.Distance(c.transform.position, transform.position)  < c.radius + radius)
             {
-                Debug.Log(" " + c);
-                Debug.Log("COLLISIONNN !!!!!");
+                //Debug.Log(" " + c);
+                //Debug.Log("COLLISIONNN !!!!!");
             }
         }
 	}
