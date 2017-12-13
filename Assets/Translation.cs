@@ -6,6 +6,7 @@ public static class Translation {
 
     public static void translateX(GameObject go, double x)
     {
+        x = x * Time.deltaTime;
         MeshFilter[] mfTab = GetMesh(go);
         foreach (MeshFilter mf in mfTab)
         {
@@ -13,14 +14,15 @@ public static class Translation {
             Vector3[] newVal = new Vector3[m.vertexCount];
             for (int i = 0; i < m.vertexCount; i++)
             {
-                Vector3 node = m.vertices[i] + mf.transform.position - go.transform.position;
-                newVal[i] = new Vector3((float)(node.x + x), node.y, node.z) - mf.transform.position + go.transform.position;
+                Vector3 node = m.vertices[i];
+                newVal[i] = new Vector3((float)(node.x + x), node.y, node.z);
             }
             m.vertices = newVal;
         }
     }
     public static void translateY(GameObject go, double y)
     {
+        y = y * Time.deltaTime;
         MeshFilter[] mfTab = GetMesh(go);
         foreach (MeshFilter mf in mfTab)
         {
@@ -28,14 +30,15 @@ public static class Translation {
             Vector3[] newVal = new Vector3[m.vertexCount];
             for (int i = 0; i < m.vertexCount; i++)
             {
-                Vector3 node = m.vertices[i] + mf.transform.position - go.transform.position;
-                newVal[i] = new Vector3(node.x, (float)(node.y + y), node.z) - mf.transform.position + go.transform.position;
+                Vector3 node = m.vertices[i];
+                newVal[i] = new Vector3(node.x, (float)(node.y + y), node.z);
             }
             m.vertices = newVal;
         }
     }
     public static void translateZ(GameObject go, double z)
     {
+        z = z * Time.deltaTime;
         MeshFilter[] mfTab = GetMesh(go);
         foreach (MeshFilter mf in mfTab)
         {
@@ -43,8 +46,8 @@ public static class Translation {
             Vector3[] newVal = new Vector3[m.vertexCount];
             for (int i = 0; i < m.vertexCount; i++)
             {
-                Vector3 node = m.vertices[i] + mf.transform.position - go.transform.position;
-                newVal[i] = new Vector3(node.x, node.y, (float)(node.z + z)) - mf.transform.position + go.transform.position;
+                Vector3 node = m.vertices[i];
+                newVal[i] = new Vector3(node.x, node.y, (float)(node.z + z));
             }
             m.vertices = newVal;
         }

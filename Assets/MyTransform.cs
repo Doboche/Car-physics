@@ -10,9 +10,12 @@ public class MyTransform : MonoBehaviour
     Vector3 crtTranslation;
     public Vector3 rotation;
     public Vector3 translation;
+    public static Vector3 position;
     // Use this for initialization
     void Start()
     {
+        position = translation;
+        translation = transform.position;
         // copy mesh to edit the copy and not the original
         if (GetComponent<MeshFilter>())
         {
@@ -39,6 +42,7 @@ public class MyTransform : MonoBehaviour
         Rotation.rotateZ(gameObject, convertToRadian(rotation.z - crtRotation.z));
         crtRotation = rotation;
         crtTranslation = translation;
+        transform.position = translation;
     }
 
     private double convertToRadian(double degree)

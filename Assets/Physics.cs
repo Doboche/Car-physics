@@ -44,7 +44,8 @@ public class Physics : MonoBehaviour
         }
         antposition = position;
         acceleration = force / masse;
-        Debug.Log("acceleration" + acceleration);
+        //Debug.Log("acceleration" + acceleration);
+        Debug.Log("force" + force);
         velocity = velocity + acceleration * Time.deltaTime;
         position = position + velocity * Time.deltaTime;
         float step = speedmax * Time.deltaTime;
@@ -60,7 +61,7 @@ public class Physics : MonoBehaviour
             velocity = InelasticCollision.MomentumCalcul(masse, m2, velocity, v2);
         }
         antvelocity = velocity;
-        Debug.Log("position" + position);
+       // Debug.Log("position" + position);
     }
 
     bool Collision(GameObject obj)
