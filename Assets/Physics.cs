@@ -4,28 +4,29 @@ using UnityEngine;
 
 public class Physics : MonoBehaviour
 {
-
-    // Use this for initialization
     public int masse;
-    public float grav;
-    public float cair;
-    public float cr;
-    public float cbraking;
-    public float maxTorque;
-    private float wheelRadius = 0.4639f;
-    public GameObject obj;
+    public float grav;      // gravity
+    public float cair;   // constant for the air resistance
+    public float cr;   // constant for rolling resistance
+    public float cbraking;   // constant for braking
+    public float maxTorque; // maximum torque of the car
+    private float wheelRadius = 0.4639f;   // Wheel radius
+    public GameObject obj; // the ground
+    public GameObject cube;
+    public double radius;
     private Vector3 force = new Vector3(0, 0, 0);
     private Vector3 velocity = new Vector3(0, 0, 0);
-    private Vector3 antvelocity = new Vector3(0, 0, 0);
+    //private Vector3 antvelocity = new Vector3(0, 0, 0);
     private Vector3 acceleration = new Vector3(0, 0, 0);
     private Vector3 position = new Vector3(0, 0, 0);
-    private Vector3 antposition = new Vector3(0, 0, 0);
-    private Vector3 gravity = new Vector3(0, 0, 0);
-    private Vector3 normal = new Vector3(0, 0, 0);
-    private float m2;
-    private Vector3 v2;
-    private float speedmax = 300;
-    private int i = 0;
+    private Vector3 antposition = new Vector3(0, 0, 0); // Vector position before moving
+    private Vector3 gravity = new Vector3(0, 0, 0);  // gravity vector
+    private Vector3 normal = new Vector3(0, 0, 0); // normal vector
+    private Vector3 normalImpact = new Vector3(0, 0, 5); // normal vector when collision (test)
+    private float massInfinity = 10000000; // infinity mass
+    private Vector3 zeroVelocity = new Vector3(0,0,0) ; //Using to represent velocity of non-moving object
+    private float speedmax = 300; //max speed of the car
+    private int i = 0; // Count the number of frame
 
     void Start()
     {
@@ -42,11 +43,11 @@ public class Physics : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        force = new Vector3(0, 0, 0);
-        force = AddForce(force, gravity);
+        force = new Vector3(0, 0, 0); // reset the force to 0,0,0 at each frame
+        force = AddForce(force, gravity); // add the gravity force
         if (Collision(obj) == true)
         {
-            force = AddForce(force, normal);
+            force = AddForce(force, normal); // if the car collide the ground, add normal force
         }
         antposition = position;
         if (i > 500)
@@ -56,46 +57,38 @@ public class Physics : MonoBehaviour
             }
             else
             {
-                force = AddForce(force, Forces.BrakingForce(cbraking));
+                force = AddForce(force, Forces.BrakingForce(cbraking)); // When 500 frame are executed, brake the car
             }
         }
         else
         {
-            force = AddForce(force, Forces.TractionForce(maxTorque,wheelRadius));
+            force = AddForce(force, Forces.TractionForce(maxTorque,wheelRadius)); // addforce to move the car
         }
-        //Debug.Log("TractionForce" + force);
-        force = AddForce(force, Forces.AirResistanceForce(cair, velocity));
-        //Debug.Log("AirForce" + force);
-        force = AddForce(force, Forces.RollingResistanceForce(cr, velocity));
-        //Debug.Log("RollingForce" + force);
+        force = AddForce(force, Forces.AirResistanceForce(cair, velocity)); // add air resistance force
+        force = AddForce(force, Forces.RollingResistanceForce(cr, velocity)); // add rolling resistance force
         if (Collision(obj) == true)
         {
-            //transform.Translate(-force * Time.deltaTime);
-            if (obj.GetComponent("masse") == null)
+            if (obj.GetComponent("masse") == null && velocity.y !=0)
             {
-                m2 = 10000000000;
-                v2 = new Vector3(0, 0, 0);
-            }
-            if (velocity.y != 0)
-            {
-                velocity = InelasticCollision.MomentumCalcul(masse, m2, velocity, v2);
+                velocity = InelasticCollision.MomentumCalcul(masse, massInfinity, velocity, zeroVelocity); // Calculate inelasticCollision when the car touch the ground
             }
         }
-        acceleration = force / masse;
-        //Debug.Log("acceleration" + acceleration);
-        velocity = velocity + acceleration * Time.deltaTime;
-        position = position + velocity * Time.deltaTime;
-        float step = speedmax * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(antposition, position, step);
-        
-        antvelocity = velocity;
-        //Debug.Log("position" + position);
-        Debug.Log("velocity" + velocity);
-        i++;
-        //Debug.Log("i" + i);
+        if (CubeCollision() == true)
+        {
+            velocity = ElasticCollision.ElasticCol(0.8f, normalImpact, 100, masse, -velocity, velocity); // Calculate elasticCollision when the car touch the cube
+        }
+        else
+        {
+            acceleration = force / masse; // compute the acceleration
+            velocity = velocity + acceleration * Time.deltaTime; // compute the velocity each frame
+            position = position + velocity * Time.deltaTime; // compute the position each frame
+            float step = speedmax * Time.deltaTime; // calculta the maximum step the car coul do each frame
+            transform.position = Vector3.MoveTowards(antposition, position, step); // transform the position of the car to the new position
+            i++; // count each frame
+        }
     }
 
-    bool Collision(GameObject obj)
+    bool Collision(GameObject obj) // detect the collision with the ground
     {
         
         if (transform.position.y - 0.8023 <= obj.transform.position.y)
@@ -108,16 +101,25 @@ public class Physics : MonoBehaviour
         }
     }
 
-    Vector3 CalculateVelocity(Vector3 acceleration, Vector3 antvelocity)
-    {
-        Vector3 velocity = antvelocity + acceleration * Time.deltaTime;
-        return velocity;
-    }
-
-    Vector3 AddForce(Vector3 force, Vector3 newForce)
+    Vector3 AddForce(Vector3 force, Vector3 newForce) // add a force
     {
         Vector3 calcul = new Vector3(0, 0, 0);
         calcul = force + newForce;
         return calcul;
+    }
+
+
+    bool CubeCollision() // detect collision with a cube
+    {
+        double distance = Vector3.Distance(transform.position, cube.transform.position);
+        if (distance != 0 && distance < radius + 2)
+        {
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
