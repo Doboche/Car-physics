@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class ElasticCollision {
 
+    //Calculate velocity in case of elastic collision
+
     public static Vector3 ElasticCol(float e , Vector3 normal, float m1,float m2, Vector3 vrel, Vector3 velocity)
     {
         float K = ((e + 1) * Vector3.Scale(vrel,normal).x + Vector3.Scale(vrel, normal).y 

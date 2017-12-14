@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class Forces {
 
+
+    //Calculate all forces on the car
+
     public static Vector3 TractionForce(float maxTorque ,float wheelRadius)
     {
         Vector3 traction = new Vector3(0, 0, maxTorque/wheelRadius);
